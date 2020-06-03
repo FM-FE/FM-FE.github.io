@@ -4,8 +4,10 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="极简smb配置, FM Blog">
-    <meta name="description" content="希望能在Windows上读写Linux的文件，并实时生效；用smb实现的极简配置">
+    <meta name="keywords" content="docker-compose, FM Blog">
+    <meta name="description" content="docker compose使用教程简介docker compose是用来控制多个容器运行逻辑（容器编排）的工具
+不再需要通过docker run命令一个一个启动容器，也不再需要用shell脚本控制容器的启动
+下载docker compos">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +15,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>极简smb配置 | FM Blog</title>
+    <title>docker-compose | FM Blog</title>
     <link rel="icon" type="image/png" href="/captain.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -227,12 +229,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">极简smb配置</h1>
+                    <h1 class="description center-align post-title">docker-compose</h1>
                 </div>
             </div>
         </div>
@@ -347,25 +349,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/教程/">
-                                <span class="chip bg-color">教程</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/smb/" class="post-category">
-                                smb
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -374,7 +363,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2019-12-23
+                    2020-06-03
                 </div>
                 
 
@@ -391,90 +380,78 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="极简smb配置"><a href="#极简smb配置" class="headerlink" title="极简smb配置"></a>极简smb配置</h1><p>希望能在Windows上读写Linux的文件，并实时生效</p>
-<p>用smb实现的极简配置</p>
-<h2 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h2><p>服务端系统信息：CentOS 7 1611</p>
-<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><ol>
-<li><p>关闭firewalld和selinux</p>
-<p><a href="https://www.cnblogs.com/moxiaoan/p/5683743.html" target="_blank" rel="noopener">关闭firewalld</a></p>
-<p><a href="https://www.cnblogs.com/activiti/p/7552677.html" target="_blank" rel="noopener">关闭selinux</a></p>
-</li>
-<li><p>安装smb服务</p>
-<p><code>yum install samba -y</code> </p>
-</li>
-<li><p>查看安装情况</p>
-<p><code>rpm -qa | grep samba</code></p>
-<img src="/2019/12/23/极简smb配置/image-20191220173022877.png" title="image-20191220173022877">
-</li>
-<li><p>启动smb服务</p>
-<p>下载后，smb服务默认关闭</p>
-<p><code>systemctl start smb</code></p>
-<hr>
-</li>
-</ol>
-<h3 id="配置smb"><a href="#配置smb" class="headerlink" title="配置smb"></a>配置smb</h3><p>smb下载安装完成后，会自动生成配置文件/etc/samba/smb.conf</p>
-<p>可以在smb.conf同级目录下，使用<code>testparm</code>命令测试smb.conf是否合法</p>
-<ol start="5">
-<li><p>极简smb.conf配置如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">;全局配置；不重要，可以忽略</span><br><span class="line"></span><br><span class="line">[global]</span><br><span class="line">    workgroup = MYGROUP </span><br><span class="line">    server string = Samba Server Version %v</span><br><span class="line">    log file = /var/log/samba/log.%m</span><br><span class="line">    max log size = 50</span><br><span class="line"></span><br><span class="line">;共享配置</span><br><span class="line"></span><br><span class="line">[root]  # Windows将显示的共享文件夹名</span><br><span class="line">    comment = User Directory</span><br><span class="line">    path = /root  # Linux要共享出去的目录</span><br><span class="line">    read only = No  # 读写权限</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h3 id="添加smb用户"><a href="#添加smb用户" class="headerlink" title="添加smb用户"></a>添加smb用户</h3><ol start="6">
-<li><p>执行命令</p>
-<p><code>smbpasswd -a root</code></p>
-<p>执行后，需要设置密码</p>
-<img src="/2019/12/23/极简smb配置/image-20191223191458557.png" title="image-20191223191458557">
-
-
-
-</li>
-</ol>
-<hr>
-<h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><p>客户端系统信息： win10</p>
+                <h1 id="docker-compose使用教程"><a href="#docker-compose使用教程" class="headerlink" title="docker compose使用教程"></a>docker compose使用教程</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>docker compose是用来控制多个容器运行逻辑（容器编排）的工具</p>
+<p>不再需要通过docker run命令一个一个启动容器，也不再需要用shell脚本控制容器的启动</p>
+<h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p>docker compose不集成在docker中，需要另外下载</p>
+<p><a href="https://docs.docker.com/compose/install/" target="_blank" rel="noopener">官方文档参考地址</a></p>
 <ol>
-<li><p>准备工作</p>
-<p>关闭win 10专用网络防火墙</p>
+<li><p><code>curl -L &quot;https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</code></p>
 </li>
-<li><p>win+e，打开文件资源管理器</p>
-<p>或</p>
-<p>win+r，打开运行</p>
-</li>
-<li><p>在地址栏输入<code>\\linux IP</code>如下</p>
-<img src="/2019/12/23/极简smb配置/image-20191223192604814.png" title="image-20191223192604814">
-</li>
-<li><p>成功</p>
-<img src="/2019/12/23/极简smb配置/image-20191223192529564.png" title="image-20191223192529564">
-</li>
-<li><p>可选操作</p>
-<p>将网络共享文件夹映射为一个驱动器，就可以在代码编辑器中打开</p>
-<p><a href="https://jingyan.baidu.com/article/414eccf68c4e636b431f0a3c.html" target="_blank" rel="noopener">https://jingyan.baidu.com/article/414eccf68c4e636b431f0a3c.html</a></p>
-</li>
+<li><p><code>chmod +x /usr/local/bin/docker-compose</code></p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2></li>
 </ol>
-<hr>
-<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><ol>
-<li><p>Windows报错：不允许一个用户使用一个以上用户名与服务器或共享资源的多重连接</p>
-<p><a href="https://blog.51cto.com/mengix/1895969" target="_blank" rel="noopener">参考链接</a></p>
+<p>docker-compose将容器运行逻辑写进yml文件，然后用docker-compose up命令，启动compose</p>
+<h3 id="编辑yml文件"><a href="#编辑yml文件" class="headerlink" title="编辑yml文件"></a>编辑yml文件</h3><p><a href="https://docs.docker.com/compose/compose-file/" target="_blank" rel="noopener">docker-compose.yml文件编辑参考</a></p>
+<p>service，network，volume需要配置，但是普通使用只需要用到service</p>
+<h3 id="yml极简配置"><a href="#yml极简配置" class="headerlink" title="yml极简配置"></a>yml极简配置</h3><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'3'</span> <span class="string">//</span> <span class="string">指定compose版本，和docker版本对应（docker</span> <span class="number">18.09</span><span class="string">对应）</span></span><br><span class="line"><span class="attr">services:</span> <span class="string">//</span> <span class="string">service下都是compose要启动的容器</span></span><br><span class="line"><span class="attr">  db:</span> <span class="string">//</span> <span class="string">service名，要启动的服务</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">dockersamples/example</span> </span><br><span class="line">    <span class="string">//</span> <span class="string">镜像名</span></span><br><span class="line">    <span class="string">//</span> <span class="string">没有指定build情况下</span></span><br><span class="line">    <span class="string">//</span> <span class="string">如果该镜像存在，就用该镜像构建容器</span></span><br><span class="line">    <span class="string">//</span> <span class="string">如果该镜像不存在，就从远程下拉镜像</span></span><br><span class="line">    <span class="string">//</span> <span class="string">指定build情况下</span></span><br><span class="line">    <span class="string">//</span> <span class="string">如果镜像不存在，就以build指定的名字给将构建镜像</span></span><br><span class="line">    <span class="string">//</span> <span class="string">如果没有image字段，创建的镜像名默认为</span> <span class="string">项目名_服务名</span></span><br><span class="line"><span class="attr">    build:</span> <span class="string">//</span> <span class="string">docker</span> <span class="string">构建镜像时的相关配置</span></span><br><span class="line"><span class="attr">      context:</span> <span class="string">./MySQL</span> <span class="string">//</span> <span class="string">dockerfile所在目录</span></span><br><span class="line"><span class="attr">      network:</span> <span class="string">host</span> <span class="string">//</span> <span class="string">指定网络模式</span></span><br><span class="line"><span class="attr">    environment:</span> <span class="string">//</span> <span class="string">环境变量相关配置</span></span><br><span class="line"><span class="attr">      MYSQL_ROOT_PASSWORD:</span> <span class="string">root</span> <span class="string">//</span> <span class="string">环境变量</span></span><br><span class="line"><span class="attr">      MYSQL_DATABASE:</span> <span class="string">test_db</span></span><br><span class="line"><span class="attr">      MYSQL_USER:</span> <span class="string">docker</span></span><br><span class="line"><span class="attr">      MYSQL_PASSWORD:</span> <span class="string">docker</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">golang_db</span> <span class="string">//</span> <span class="string">容器名</span></span><br><span class="line"><span class="attr">    ports:</span> <span class="string">//</span> <span class="string">指定接口映射，不能和build</span> <span class="bullet">-&gt;</span> <span class="string">host同时使用</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"3306:3306"</span></span><br><span class="line"><span class="attr">    volumes:</span> <span class="string">//</span> <span class="string">文件映射</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"./Go:/go"</span></span><br><span class="line"><span class="attr">     depends_on:</span> <span class="string">//</span> <span class="string">容器间的依赖关系</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">db</span>  <span class="string">//</span> <span class="string">compose文件中的其他服务名</span></span><br><span class="line">      </span><br><span class="line"><span class="attr">  app:</span></span><br><span class="line"><span class="attr">    build:</span></span><br><span class="line"><span class="attr">      context:</span> <span class="string">./Go</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"./Go:/go"</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">golang_app</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"8080:8080"</span></span><br><span class="line"><span class="attr">    tty:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>按照官方文档的描述，compose文件基本涵盖了dockerfile和docker run的一切参数，可以完全依靠compose部署容器</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3"</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  db:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">mongo</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"/data/mongo/db:/data/db"</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"27017:27017"</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">mongo</span></span><br><span class="line"><span class="attr">  curd:</span></span><br><span class="line"><span class="attr">    build:</span></span><br><span class="line"><span class="attr">      context:</span> <span class="string">../mongo</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">curd</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"7460:7460"</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">curd</span></span><br><span class="line"><span class="attr">    depends_on:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">db</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>启动流程</strong></p>
+<p>在compose配置文件目录下执行命令，<code>docker-compose up</code></p>
+<p><strong>调试流程</strong></p>
 <ol>
-<li><p>运行 - 打开cmd</p>
+<li>重新编译项目可执行文件</li>
+<li>通过命令<code>docker-compose up --build -d</code> 或 <code>docker-compose build</code> 重新编译镜像</li>
+</ol>
+<p><strong>特别注意</strong></p>
+<p>在curd容器中，如果想使用mongo，那么mongo url应该写为</p>
+<p><code>mongodb://[mongo服务名]:27017</code></p>
+<p>在这里，就是</p>
+<p><code>mongodb://db:27017</code></p>
+<p>这与docker run方式启动容器不同，docker run启动时会添加 –net=host 参数，所以其他容器连接mongo数据库，通过localhost即可</p>
+<p>而，compose将每个服务都看作是独立的，通过服务名连接访问</p>
+<p>而compose方式中的localhost，只表示本服务，可以通过服务名访问其他服务</p>
+<blockquote>
+<p>官方文档表示，version 3.4开始在支持 –net=host 模式</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&gt; build:</span></span><br><span class="line"><span class="string">&gt; context: .</span></span><br><span class="line"><span class="string">&gt; network: host</span></span><br><span class="line"><span class="string">&gt;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>暂未验证</p>
+</blockquote>
+<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><p><a href="https://docs.docker.com/compose/reference/overview/" target="_blank" rel="noopener">docker compose命令参考</a></p>
+<p><strong>常用命令如下</strong></p>
+<ol>
+<li><p><a href="https://docs.docker.com/compose/reference/up/" target="_blank" rel="noopener">启动compose</a></p>
+<p>docker-compose [ <strong>-f</strong> 指定配置yml文件 ] [ <strong>-p</strong> 指定项目名称，默认为yml所在目录名 ]  up  [ <strong>-d</strong> ]  [ 服务名 ] </p>
+<ul>
+<li><p>detch模式启动</p>
+<p>docker-compose up -d </p>
 </li>
-<li><p>查看当前的链接</p>
-<p><code>net use</code></p>
+<li><p>重新编译并启动</p>
+<p>docker-compose up –build -d</p>
 </li>
-<li><p>清理指定链接</p>
-<p><code>net use \\Linux IP\folder /delete</code></p>
+</ul>
+</li>
+<li><p><a href="https://docs.docker.com/compose/reference/build/" target="_blank" rel="noopener">重新编译</a></p>
+<p>docker-compose build [服务名]</p>
+</li>
+<li><p><a href="https://docs.docker.com/compose/reference/down/" target="_blank" rel="noopener">删除compose</a></p>
+<p>docker-compose down [options]</p>
+<ul>
+<li><p>删除因compose创建的容器和本地镜像（仅删除image字段为空的镜像）</p>
+<p>docker-compose down –rmi local</p>
+</li>
+</ul>
 </li>
 </ol>
-<img src="/2019/12/23/极简smb配置/image-20191223184331299.png" title="image-20191223184331299">
-</li>
-<li><p>Windows报错：没有权限访问</p>
-<p>未创建smb用户（直接为smb创建root用户可能比较省事）</p>
-</li>
-</ol>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://www.cnblogs.com/muscleape/p/6385583.html" target="_blank" rel="noopener">smb配置文件解析</a></p>
-<p><a href="https://blog.csdn.net/wh8_2011/article/details/78866644" target="_blank" rel="noopener">极简配置文件参考</a></p>
-<p><a href="https://blog.csdn.net/l_liangkk/article/details/80712498" target="_blank" rel="noopener">linux及smb用户的创建</a></p>
-<p><a href="https://blog.csdn.net/qq_32693119/article/details/80016272" target="_blank" rel="noopener">linux及smb用户的删除</a></p>
+<img src="/2020/06/03/docker-compose/image-20200603224144183.png" title="compose配置实例">
+
+
+
+
+
 
             </div>
             <hr/>
@@ -500,7 +477,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://fm-fe.github.io/2019/12/23/极简smb配置/">https://fm-fe.github.io/2019/12/23/极简smb配置/</a>
+                    <a href="https://fm-fe.github.io/2020/06/03/docker-compose/">https://fm-fe.github.io/2020/06/03/docker-compose/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -537,11 +514,7 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/教程/">
-                                    <span class="chip bg-color">教程</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -577,9 +550,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/06/03/docker-compose/">
                     <div class="card-image">
@@ -599,9 +573,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-06-03
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-06-03
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -610,6 +584,7 @@
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -620,44 +595,44 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/12/19/Hexo学习笔记/">
+                <a href="/2019/12/23/极简smb配置/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="Hexo学习笔记">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="极简smb配置">
                         
-                        <span class="card-title">Hexo学习笔记</span>
+                        <span class="card-title">极简smb配置</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Hexo学习笔记
-新建文章（post）
-
-在 博客目录下打开git bash ，输入命令
-hexo new post &quot;article title&quot;
-
-打开博客根目录 blog\source\_posts
-
-编辑已经新建
+                            希望能在Windows上读写Linux的文件，并实时生效；用smb实现的极简配置
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2019-12-19
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-12-23
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/hexo/" class="post-category">
-                                    hexo
+                            <a href="/categories/smb/" class="post-category">
+                                    smb
                                 </a>
                             
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/教程/">
+                        <span class="chip bg-color">教程</span>
+                    </a>
+                    
                 </div>
                 
             </div>
