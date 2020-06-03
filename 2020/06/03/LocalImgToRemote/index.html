@@ -4,8 +4,16 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="极简smb配置, FM Blog">
-    <meta name="description" content="希望能在Windows上读写Linux的文件，并实时生效；用smb实现的极简配置">
+    <meta name="keywords" content="LocalImgToRemote, FM Blog">
+    <meta name="description" content="
+
+test
+local to remote
+
+
+
+
+">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +21,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>极简smb配置 | FM Blog</title>
+    <title>LocalImgToRemote | FM Blog</title>
     <link rel="icon" type="image/png" href="/captain.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -227,12 +235,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">极简smb配置</h1>
+                    <h1 class="description center-align post-title">LocalImgToRemote</h1>
                 </div>
             </div>
         </div>
@@ -347,25 +355,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/教程/">
-                                <span class="chip bg-color">教程</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/smb/" class="post-category">
-                                smb
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -374,7 +369,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2019-12-23
+                    2020-06-03
                 </div>
                 
 
@@ -391,90 +386,14 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="极简smb配置"><a href="#极简smb配置" class="headerlink" title="极简smb配置"></a>极简smb配置</h1><p>希望能在Windows上读写Linux的文件，并实时生效</p>
-<p>用smb实现的极简配置</p>
-<h2 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h2><p>服务端系统信息：CentOS 7 1611</p>
-<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><ol>
-<li><p>关闭firewalld和selinux</p>
-<p><a href="https://www.cnblogs.com/moxiaoan/p/5683743.html" target="_blank" rel="noopener">关闭firewalld</a></p>
-<p><a href="https://www.cnblogs.com/activiti/p/7552677.html" target="_blank" rel="noopener">关闭selinux</a></p>
-</li>
-<li><p>安装smb服务</p>
-<p><code>yum install samba -y</code> </p>
-</li>
-<li><p>查看安装情况</p>
-<p><code>rpm -qa | grep samba</code></p>
-<img src="/2019/12/23/极简smb配置/image-20191220173022877.png" title="image-20191220173022877">
-</li>
-<li><p>启动smb服务</p>
-<p>下载后，smb服务默认关闭</p>
-<p><code>systemctl start smb</code></p>
-<hr>
-</li>
-</ol>
-<h3 id="配置smb"><a href="#配置smb" class="headerlink" title="配置smb"></a>配置smb</h3><p>smb下载安装完成后，会自动生成配置文件/etc/samba/smb.conf</p>
-<p>可以在smb.conf同级目录下，使用<code>testparm</code>命令测试smb.conf是否合法</p>
-<ol start="5">
-<li><p>极简smb.conf配置如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">;全局配置；不重要，可以忽略</span><br><span class="line"></span><br><span class="line">[global]</span><br><span class="line">    workgroup = MYGROUP </span><br><span class="line">    server string = Samba Server Version %v</span><br><span class="line">    log file = /var/log/samba/log.%m</span><br><span class="line">    max log size = 50</span><br><span class="line"></span><br><span class="line">;共享配置</span><br><span class="line"></span><br><span class="line">[root]  # Windows将显示的共享文件夹名</span><br><span class="line">    comment = User Directory</span><br><span class="line">    path = /root  # Linux要共享出去的目录</span><br><span class="line">    read only = No  # 读写权限</span><br></pre></td></tr></table></figure>
+                <img src="/2020/06/03/LocalImgToRemote/image-20200603214729280.png" title="image-20200603214729280">
 
-</li>
-</ol>
-<h3 id="添加smb用户"><a href="#添加smb用户" class="headerlink" title="添加smb用户"></a>添加smb用户</h3><ol start="6">
-<li><p>执行命令</p>
-<p><code>smbpasswd -a root</code></p>
-<p>执行后，需要设置密码</p>
-<img src="/2019/12/23/极简smb配置/image-20191223191458557.png" title="image-20191223191458557">
+<p>test</p>
+<p>local to remote</p>
+<img src="/2020/06/03/LocalImgToRemote/image-20200603220253534.png" title="image-20200603220253534">
 
 
 
-</li>
-</ol>
-<hr>
-<h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><p>客户端系统信息： win10</p>
-<ol>
-<li><p>准备工作</p>
-<p>关闭win 10专用网络防火墙</p>
-</li>
-<li><p>win+e，打开文件资源管理器</p>
-<p>或</p>
-<p>win+r，打开运行</p>
-</li>
-<li><p>在地址栏输入<code>\\linux IP</code>如下</p>
-<img src="/2019/12/23/极简smb配置/image-20191223192604814.png" title="image-20191223192604814">
-</li>
-<li><p>成功</p>
-<img src="/2019/12/23/极简smb配置/image-20191223192529564.png" title="image-20191223192529564">
-</li>
-<li><p>可选操作</p>
-<p>将网络共享文件夹映射为一个驱动器，就可以在代码编辑器中打开</p>
-<p><a href="https://jingyan.baidu.com/article/414eccf68c4e636b431f0a3c.html" target="_blank" rel="noopener">https://jingyan.baidu.com/article/414eccf68c4e636b431f0a3c.html</a></p>
-</li>
-</ol>
-<hr>
-<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><ol>
-<li><p>Windows报错：不允许一个用户使用一个以上用户名与服务器或共享资源的多重连接</p>
-<p><a href="https://blog.51cto.com/mengix/1895969" target="_blank" rel="noopener">参考链接</a></p>
-<ol>
-<li><p>运行 - 打开cmd</p>
-</li>
-<li><p>查看当前的链接</p>
-<p><code>net use</code></p>
-</li>
-<li><p>清理指定链接</p>
-<p><code>net use \\Linux IP\folder /delete</code></p>
-</li>
-</ol>
-<img src="/2019/12/23/极简smb配置/image-20191223184331299.png" title="image-20191223184331299">
-</li>
-<li><p>Windows报错：没有权限访问</p>
-<p>未创建smb用户（直接为smb创建root用户可能比较省事）</p>
-</li>
-</ol>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://www.cnblogs.com/muscleape/p/6385583.html" target="_blank" rel="noopener">smb配置文件解析</a></p>
-<p><a href="https://blog.csdn.net/wh8_2011/article/details/78866644" target="_blank" rel="noopener">极简配置文件参考</a></p>
-<p><a href="https://blog.csdn.net/l_liangkk/article/details/80712498" target="_blank" rel="noopener">linux及smb用户的创建</a></p>
-<p><a href="https://blog.csdn.net/qq_32693119/article/details/80016272" target="_blank" rel="noopener">linux及smb用户的删除</a></p>
 
             </div>
             <hr/>
@@ -500,7 +419,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://fm-fe.github.io/2019/12/23/极简smb配置/">https://fm-fe.github.io/2019/12/23/极简smb配置/</a>
+                    <a href="https://fm-fe.github.io/2020/06/03/LocalImgToRemote/">https://fm-fe.github.io/2020/06/03/LocalImgToRemote/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -537,11 +456,7 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/教程/">
-                                    <span class="chip bg-color">教程</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -577,9 +492,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/06/03/LocalImgToRemote/">
                     <div class="card-image">
@@ -605,9 +521,9 @@ local to remote
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-06-03
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-06-03
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -616,6 +532,7 @@ local to remote
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -626,44 +543,44 @@ local to remote
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/12/19/Hexo学习笔记/">
+                <a href="/2019/12/23/极简smb配置/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="Hexo学习笔记">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="极简smb配置">
                         
-                        <span class="card-title">Hexo学习笔记</span>
+                        <span class="card-title">极简smb配置</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Hexo学习笔记
-新建文章（post）
-
-在 博客目录下打开git bash ，输入命令
-hexo new post &quot;article title&quot;
-
-打开博客根目录 blog\source\_posts
-
-编辑已经新建
+                            希望能在Windows上读写Linux的文件，并实时生效；用smb实现的极简配置
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2019-12-19
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-12-23
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/hexo/" class="post-category">
-                                    hexo
+                            <a href="/categories/smb/" class="post-category">
+                                    smb
                                 </a>
                             
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/教程/">
+                        <span class="chip bg-color">教程</span>
+                    </a>
+                    
                 </div>
                 
             </div>
